@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using TennisBookings.Web.Services;
 
@@ -20,6 +21,7 @@ namespace TennisBookings.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IWeatherForecaster, AmazingWeatherForecaster>();
+            services.TryAddTransient<IWeatherForecaster, WeatherForecaster>();
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
