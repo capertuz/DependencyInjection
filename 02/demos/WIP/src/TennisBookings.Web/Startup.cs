@@ -27,13 +27,12 @@ namespace TennisBookings.Web
 
             services.TryAddScoped<ICourtBookingService, CourtBookingService>();
 
-            services.AddSingleton<ICourtBookingRule, ClubIsOpenRule>();
-            services.AddSingleton<ICourtBookingRule, MaxBookingLengthRule>();
-            services.AddSingleton<ICourtBookingRule, MaxPeakTimeBookingLengthRule>();
-            services.AddScoped<ICourtBookingRule, MemberCourtBookingsMaxHoursPerDayRule>();
-
-            //This is registered as scoped because MemberBookingsMustNotOverlapRule depends on ICourtBookingService, which is registered as scoped
-            services.AddScoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>();
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, ClubIsOpenRule>());
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, MaxBookingLengthRule>());
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, MaxPeakTimeBookingLengthRule>());
+            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberCourtBookingsMaxHoursPerDayRule>());
+            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
+            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
