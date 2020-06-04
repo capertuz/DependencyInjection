@@ -338,3 +338,5 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/02/demos/After/test/TennisBookings.Web.Tests/Properties/launchSettings.json
+/02/demos/After/src/TennisBookings.Web/Properties/launchSettings.json

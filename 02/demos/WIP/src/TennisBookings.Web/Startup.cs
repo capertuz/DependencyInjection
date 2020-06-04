@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
 
 namespace TennisBookings.Web
@@ -23,6 +24,17 @@ namespace TennisBookings.Web
             services.AddTransient<IWeatherForecaster, AmazingWeatherForecaster>();
             services.Replace(ServiceDescriptor.Transient<IWeatherForecaster, WeatherForecaster>());
             //services.RemoveAll<IWeatherForecaster>();
+
+            services.TryAddScoped<ICourtBookingService, CourtBookingService>();
+
+            services.AddSingleton<ICourtBookingRule, ClubIsOpenRule>();
+            services.AddSingleton<ICourtBookingRule, MaxBookingLengthRule>();
+            services.AddSingleton<ICourtBookingRule, MaxPeakTimeBookingLengthRule>();
+            services.AddScoped<ICourtBookingRule, MemberCourtBookingsMaxHoursPerDayRule>();
+
+            //This is registered as scoped because MemberBookingsMustNotOverlapRule depends on ICourtBookingService, which is registered as scoped
+            services.AddScoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>();
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

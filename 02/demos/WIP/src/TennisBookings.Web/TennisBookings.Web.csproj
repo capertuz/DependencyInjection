@@ -11,4 +11,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Domain\Rules\" />
+    <Folder Include="Data\" />
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
 </Project>
