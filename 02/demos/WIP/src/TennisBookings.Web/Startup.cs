@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;
 using TennisBookings.Web.Configuration;
+using TennisBookings.Web.Core.Caching;
 using TennisBookings.Web.Domain;
 using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
@@ -68,6 +69,11 @@ namespace TennisBookings.Web
 
             services.TryAddSingleton<IGreetingService>(sp =>
                 sp.GetRequiredService<GreetingService>());
+
+            services.AddDistributedMemoryCache();
+            //services.TryAddSingleton<IDistributedCacheFactory<CurrentWeatherResult>, DistributedCache<CurrentWeatherResult>>();
+            //services.TryAddSingleton<IDistributedCacheFactory<IEnumerable<Court>>, IEnumerable<Court>>();
+            services.TryAddSingleton<IDistributedCacheFactory, DistributedCacheFactory>();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
