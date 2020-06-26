@@ -16,9 +16,11 @@ namespace TennisBookings.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _hostingEnvironment;
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
         {
             Configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -61,8 +63,9 @@ namespace TennisBookings.Web
                 return builder.Build();
             }); // implementation factory for complex service construction
 
-            services.TryAddSingleton<IHomePageGreetingService,GreetingService>();
-            services.TryAddSingleton<IGreetingService, GreetingService>();
+            var greetingService = new GreetingService(_hostingEnvironment);
+            services.TryAddSingleton<IHomePageGreetingService>(greetingService);
+            services.TryAddSingleton<IGreetingService>(greetingService);
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
