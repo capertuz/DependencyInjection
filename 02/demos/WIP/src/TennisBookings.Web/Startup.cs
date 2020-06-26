@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
 using Microsoft.Extensions.Options;
+using System;
 using TennisBookings.Web.Configuration;
 using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
+using TennisBookings.Web.Services.Notifications;
 
 namespace TennisBookings.Web
 {
@@ -37,6 +38,8 @@ namespace TennisBookings.Web
             services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
 
             services.TryAddScoped<IBookingConfiguration>(sp => sp.GetService<IOptions<BookingConfiguration>>().Value);
+
+            services.AddSingleton<INotificationService, EmailNotificationService>();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
