@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Folder Include="Core\Caching\" />
+    <Folder Include="Core\DependencyInjection\" />
     <Folder Include="Domain\Rules\" />
     <Folder Include="Data\" />
   </ItemGroup>

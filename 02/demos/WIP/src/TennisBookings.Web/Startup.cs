@@ -7,11 +7,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;
 using TennisBookings.Web.Configuration;
-using TennisBookings.Web.Core.Caching;
-using TennisBookings.Web.Domain;
+using TennisBookings.Web.Core.DependencyInjection;
 using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
-using TennisBookings.Web.Services.Notifications;
 
 namespace TennisBookings.Web
 {
@@ -41,38 +39,9 @@ namespace TennisBookings.Web
 
             services.TryAddScoped<IBookingConfiguration>(sp => sp.GetService<IOptions<BookingConfiguration>>().Value);
 
-            services.TryAddSingleton<EmailNotificationService>();
-            services.TryAddSingleton<SmsNotificationService>();
+            services.AddNotifications();
 
-            services.AddSingleton<INotificationService>(sp =>
-                new CompositeNotificationService(
-                    new INotificationService[]
-                    {
-                        sp.GetRequiredService<EmailNotificationService>(),
-                        sp.GetRequiredService<SmsNotificationService>()
-                    })); // composite pattern
-
-            services.TryAddTransient<IMembershipAdvertBuilder, MembershipAdvertBuilder>();
-            services.TryAddScoped<IMembershipAdvert>(sp =>
-            {
-                var builder = sp.GetService<IMembershipAdvertBuilder>();
-
-                builder.WithDiscount(10m);
-
-                return builder.Build();
-            }); // implementation factory for complex service construction
-
-            services.TryAddSingleton<GreetingService>();
-
-            services.TryAddSingleton<IHomePageGreetingService>(sp =>
-                sp.GetRequiredService<GreetingService>());
-
-            services.TryAddSingleton<IGreetingService>(sp =>
-                sp.GetRequiredService<GreetingService>());
-
-            services.AddDistributedMemoryCache();
-            services.TryAddSingleton(typeof(IDistributedCache<>), typeof(DistributedCache<>)); // open generic registration
-            services.TryAddSingleton<IDistributedCacheFactory, DistributedCacheFactory>();
+            services.AddMembershipServices().AddGreetings().AddCaching();//you can concatenate multiple extensions
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
