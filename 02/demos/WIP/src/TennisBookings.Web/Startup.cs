@@ -39,7 +39,16 @@ namespace TennisBookings.Web
 
             services.TryAddScoped<IBookingConfiguration>(sp => sp.GetService<IOptions<BookingConfiguration>>().Value);
 
-            services.AddSingleton<INotificationService, EmailNotificationService>();
+            services.TryAddSingleton<EmailNotificationService>();
+            services.TryAddSingleton<SmsNotificationService>();
+
+            services.AddSingleton<INotificationService>(sp =>
+                new CompositeNotificationService(
+                    new INotificationService[]
+                    {
+                        sp.GetRequiredService<EmailNotificationService>(),
+                        sp.GetRequiredService<SmsNotificationService>()
+                    })); // composite pattern
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
