@@ -61,6 +61,9 @@ namespace TennisBookings.Web
                 return builder.Build();
             }); // implementation factory for complex service construction
 
+            services.TryAddSingleton<IHomePageGreetingService,GreetingService>();
+            services.TryAddSingleton<IGreetingService, GreetingService>();
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
