@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;
 using TennisBookings.Web.Configuration;
+using TennisBookings.Web.Domain;
 using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
 using TennisBookings.Web.Services.Notifications;
@@ -49,6 +50,16 @@ namespace TennisBookings.Web
                         sp.GetRequiredService<EmailNotificationService>(),
                         sp.GetRequiredService<SmsNotificationService>()
                     })); // composite pattern
+
+            services.TryAddTransient<IMembershipAdvertBuilder, MembershipAdvertBuilder>();
+            services.TryAddScoped<IMembershipAdvert>(sp =>
+            {
+                var builder = sp.GetService<IMembershipAdvertBuilder>();
+
+                builder.WithDiscount(10m);
+
+                return builder.Build();
+            }); // implementation factory for complex service construction
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

@@ -14,7 +14,6 @@
   <ItemGroup>
     <Folder Include="Domain\Rules\" />
     <Folder Include="Data\" />
-    <Folder Include="Configuration\" />
   </ItemGroup>
 
 </Project>
