@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
+using Microsoft.Extensions.Options;
+using TennisBookings.Web.Configuration;
 using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
 
@@ -33,6 +35,8 @@ namespace TennisBookings.Web
             services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberCourtBookingsMaxHoursPerDayRule>());
             services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
             services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
+
+            services.TryAddScoped<IBookingConfiguration>(sp => sp.GetService<IOptions<BookingConfiguration>>().Value);
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
