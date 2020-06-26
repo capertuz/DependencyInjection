@@ -71,8 +71,7 @@ namespace TennisBookings.Web
                 sp.GetRequiredService<GreetingService>());
 
             services.AddDistributedMemoryCache();
-            //services.TryAddSingleton<IDistributedCacheFactory<CurrentWeatherResult>, DistributedCache<CurrentWeatherResult>>();
-            //services.TryAddSingleton<IDistributedCacheFactory<IEnumerable<Court>>, IEnumerable<Court>>();
+            services.TryAddSingleton(typeof(IDistributedCache<>), typeof(DistributedCache<>)); // open generic registration
             services.TryAddSingleton<IDistributedCacheFactory, DistributedCacheFactory>();
 
             services.AddMvc()
