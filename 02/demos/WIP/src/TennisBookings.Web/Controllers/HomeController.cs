@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using TennisBookings.Web.Services;
 using TennisBookings.Web.ViewModels;
 
@@ -14,6 +15,10 @@ namespace TennisBookings.Web.Controllers
             _weatherForecaster = weatherForecaster;
         }
 
+        public HomeController(IWeatherForecaster weatherForecaster, ILogger logger)
+        {
+            _weatherForecaster = weatherForecaster;
+        }
         [Route("")]
         public IActionResult Index()
         {
