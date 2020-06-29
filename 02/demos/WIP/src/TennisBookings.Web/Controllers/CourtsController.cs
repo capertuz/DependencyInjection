@@ -14,12 +14,10 @@ namespace TennisBookings.Web.Areas.Admin.Controllers
     public class CourtsController : Controller
     {
         private readonly ICourtBookingService _courtBookingService;
-        private readonly ICourtMaintenanceService _courtMaintenanceService;
 
-        public CourtsController(ICourtBookingService courtBookingService, ICourtMaintenanceService courtMaintenanceService)
+        public CourtsController(ICourtBookingService courtBookingService)
         {
             _courtBookingService = courtBookingService;
-            _courtMaintenanceService = courtMaintenanceService;
         }
 
         [HttpGet]
@@ -86,9 +84,10 @@ namespace TennisBookings.Web.Areas.Admin.Controllers
         }
 
         [Route("Maintenance/Upcoming")]
-        public async Task<ActionResult> UpcomingMaintenance()
+        public async Task<ActionResult> UpcomingMaintenance(
+            [FromServices] ICourtMaintenanceService courtMaintenanceService)
         {
-            var maintenanceSchedules = await _courtMaintenanceService.GetUpcomingMaintenance();
+            var maintenanceSchedules = await courtMaintenanceService.GetUpcomingMaintenance();
 
             var maintenanceViewModels = maintenanceSchedules.Select(x => new CourtMaintenanceViewModel
             {
