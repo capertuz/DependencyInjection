@@ -9,25 +9,23 @@ namespace TennisBookings.Web.Core.Middleware
     public class LastRequestMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly UserManager<TennisBookingsUser> _userManager;
 
-        public LastRequestMiddleware(RequestDelegate next, UserManager<TennisBookingsUser> userManager)
+        public LastRequestMiddleware(RequestDelegate next)
         {
             _next = next;
-            _userManager = userManager;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, UserManager<TennisBookingsUser> userManager)
         {
             if (context.User?.Identity != null && context.User.Identity.IsAuthenticated)
             {
-                var user = await _userManager.FindByNameAsync(context.User.Identity.Name);
+                var user = await userManager.FindByNameAsync(context.User.Identity.Name);
 
                 if (user != null)
                 {
                     user.LastRequestUtc = DateTime.UtcNow;
 
-                    await _userManager.UpdateAsync(user);
+                    await userManager.UpdateAsync(user);
                 }
             }
 
