@@ -16,6 +16,7 @@
     <Folder Include="Core\DependencyInjection\" />
     <Folder Include="Domain\Rules\" />
     <Folder Include="Data\" />
+    <Folder Include="Views\Courts\" />
   </ItemGroup>
 
 </Project>
