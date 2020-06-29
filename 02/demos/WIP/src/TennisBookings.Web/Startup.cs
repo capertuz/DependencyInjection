@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -8,6 +10,8 @@ using Microsoft.Extensions.Options;
 using System;
 using TennisBookings.Web.Configuration;
 using TennisBookings.Web.Core.DependencyInjection;
+using TennisBookings.Web.Core.Middleware;
+using TennisBookings.Web.Data;
 using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
 
@@ -47,6 +51,15 @@ namespace TennisBookings.Web
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddIdentity<TennisBookingsUser, TennisBookingsRole>()
+                .AddEntityFrameworkStores<TennisBookingDbContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
+
+            services.AddDbContext<TennisBookingDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
@@ -63,6 +76,8 @@ namespace TennisBookings.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseLastRequestTracking(); // only track requests which make it to MVC, i.e. not static files
 
             app.UseMvc();
         }
