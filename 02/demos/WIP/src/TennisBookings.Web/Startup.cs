@@ -28,6 +28,8 @@ namespace TennisBookings.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<FeaturesConfiguration>(Configuration.GetSection("Features"));
+
             services.AddTransient<IWeatherForecaster, AmazingWeatherForecaster>();
             services.Replace(ServiceDescriptor.Transient<IWeatherForecaster, WeatherForecaster>());
             //services.RemoveAll<IWeatherForecaster>();

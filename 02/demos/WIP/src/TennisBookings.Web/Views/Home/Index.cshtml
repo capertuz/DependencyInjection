@@ -1,19 +1,25 @@
-﻿@model ViewModels.HomeViewModel
+﻿@using Configuration
+@using Microsoft.Extensions.Options
+@inject IOptions<FeaturesConfiguration> Features
+
+@model ViewModels.HomeViewModel
 @{
     ViewData["Title"] = "Welcome to our Tennis Club";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="alert alert-info" role="alert">
-            <h4>How's the weather?</h4>
-            <p>@Model.WeatherDescription</p>
+@if (Features.Value.EnableWeatherForecast)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info" role="alert">
+                <h4>How's the weather?</h4>
+                <p>@Model.WeatherDescription</p>
+            </div>
         </div>
     </div>
-</div>
-
+}
 <div class="row">
     <div class="col-md-12">
         <p>
