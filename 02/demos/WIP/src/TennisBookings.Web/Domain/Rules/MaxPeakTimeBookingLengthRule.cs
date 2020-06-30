@@ -1,11 +1,11 @@
-﻿using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 using TennisBookings.Web.Configuration;
 using TennisBookings.Web.Data;
 
 namespace TennisBookings.Web.Domain.Rules
 {
-    public class MaxPeakTimeBookingLengthRule : ISingletonCourtBookingRule
+    public class MaxPeakTimeBookingLengthRule : ICourtBookingRule
     {
         private readonly IClubConfiguration _clubConfiguration;
         private readonly BookingConfiguration _bookingConfiguration;

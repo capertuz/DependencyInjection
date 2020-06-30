@@ -4,7 +4,7 @@ using TennisBookings.Web.Data;
 
 namespace TennisBookings.Web.Domain.Rules
 {
-    public class ClubIsOpenRule : ISingletonCourtBookingRule
+    public class ClubIsOpenRule : ICourtBookingRule
     {
         private readonly IClubConfiguration _clubConfiguration;
 

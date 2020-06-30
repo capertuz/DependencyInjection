@@ -12,7 +12,6 @@ using TennisBookings.Web.Configuration;
 using TennisBookings.Web.Core.DependencyInjection;
 using TennisBookings.Web.Core.Middleware;
 using TennisBookings.Web.Data;
-using TennisBookings.Web.Domain.Rules;
 using TennisBookings.Web.Services;
 
 namespace TennisBookings.Web
@@ -36,12 +35,7 @@ namespace TennisBookings.Web
 
             services.TryAddScoped<ICourtBookingService, CourtBookingService>();
 
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, ClubIsOpenRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, MaxBookingLengthRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, MaxPeakTimeBookingLengthRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberCourtBookingsMaxHoursPerDayRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
+            services.AddBookingRules();
 
             services.TryAddScoped<IBookingConfiguration>(sp => sp.GetService<IOptions<BookingConfiguration>>().Value);
 
