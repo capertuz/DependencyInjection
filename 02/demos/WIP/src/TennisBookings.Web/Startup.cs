@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +43,7 @@ namespace TennisBookings.Web
 
             services.AddMembershipServices().AddGreetings().AddCaching();//you can concatenate multiple extensions
 
-            services.AddCourtServices();
+            //services.AddCourtServices(); -replaced with Autofac registration in ConfigureContainer
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -75,6 +76,14 @@ namespace TennisBookings.Web
             app.UseLastRequestTracking(); // only track requests which make it to MVC, i.e. not static files
 
             app.UseMvc();
+        }
+
+        // This method is called after ConfigureServices
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<CourtMaintenanceService>()
+                .As<ICourtMaintenanceService>()
+                .InstancePerLifetimeScope();
         }
     }
 }
