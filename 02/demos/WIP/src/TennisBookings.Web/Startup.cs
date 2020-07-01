@@ -42,7 +42,7 @@ namespace TennisBookings.Web
 
             services.AddMembershipServices().AddGreetings().AddCaching();//you can concatenate multiple extensions
 
-            services.TryAddScoped<ICourtMaintenanceService, CourtMaintenanceService>();
+            services.AddCourtServices();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
