@@ -12,6 +12,7 @@ namespace TennisBookings.Web.Core.DependencyInjection
             services.AddHttpClient<IWeatherApiClient, WeatherApiClient>();
 
             services.TryAddSingleton<IWeatherForecaster, WeatherForecaster>();
+            services.Decorate<IWeatherForecaster, CachedWeatherForecaster>();
 
 
             return services;
