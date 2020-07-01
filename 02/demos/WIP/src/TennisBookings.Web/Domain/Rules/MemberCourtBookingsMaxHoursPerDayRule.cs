@@ -4,7 +4,7 @@ using TennisBookings.Web.Services;
 
 namespace TennisBookings.Web.Domain.Rules
 {
-    public class MemberCourtBookingsMaxHoursPerDayRule : ICourtBookingRule
+    public class MemberCourtBookingsMaxHoursPerDayRule : IScopedCourtBookingRule
     {
         private readonly ICourtBookingService _courtBookingService;
 

@@ -8,7 +8,7 @@ namespace TennisBookings.Web.Domain.Rules
     /// <summary>
     /// A rule which prevents a single booking being longer than the configured max booking.
     /// </summary>
-    public class MaxBookingLengthRule : ICourtBookingRule
+    public class MaxBookingLengthRule : ISingletonCourtBookingRule
     {
         private readonly IBookingConfiguration _bookingConfiguration;
 

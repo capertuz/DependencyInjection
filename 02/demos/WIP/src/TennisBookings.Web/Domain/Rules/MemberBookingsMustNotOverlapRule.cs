@@ -5,7 +5,7 @@ using TennisBookings.Web.Services;
 
 namespace TennisBookings.Web.Domain.Rules
 {
-    public class MemberBookingsMustNotOverlapRule : ICourtBookingRule
+    public class MemberBookingsMustNotOverlapRule : IScopedCourtBookingRule
     {
         private readonly ICourtBookingService _courtBookingService;
 

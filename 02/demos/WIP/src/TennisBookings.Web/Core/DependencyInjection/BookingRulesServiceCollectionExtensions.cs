@@ -8,11 +8,15 @@ namespace TennisBookings.Web.Core.DependencyInjection
     {
         public static IServiceCollection AddBookingRules(this IServiceCollection services)
         {
+            // Scrutor assembly scanning
             services.Scan(scan => scan
                 .FromAssemblyOf<ICourtBookingRule>()
-                .AddClasses(c => c.AssignableTo<ICourtBookingRule>())
-                .AsImplementedInterfaces()
-                .WithScopedLifetime());
+                .AddClasses(classes => classes.AssignableTo<IScopedCourtBookingRule>())
+                .As<ICourtBookingRule>()
+                .WithScopedLifetime()
+                .AddClasses(classes => classes.AssignableTo<ISingletonCourtBookingRule>())
+                .As<ICourtBookingRule>()
+                .WithSingletonLifetime());
 
             services.TryAddScoped<IBookingRuleProcessor, BookingRuleProcessor>();
 
