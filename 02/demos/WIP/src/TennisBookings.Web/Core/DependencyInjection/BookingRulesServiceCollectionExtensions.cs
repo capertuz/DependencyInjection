@@ -8,11 +8,11 @@ namespace TennisBookings.Web.Core.DependencyInjection
     {
         public static IServiceCollection AddBookingRules(this IServiceCollection services)
         {
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, ClubIsOpenRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, MaxBookingLengthRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ICourtBookingRule, MaxPeakTimeBookingLengthRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberCourtBookingsMaxHoursPerDayRule>());
-            services.TryAddEnumerable(ServiceDescriptor.Scoped<ICourtBookingRule, MemberBookingsMustNotOverlapRule>());
+            services.Scan(scan => scan
+                .FromAssemblyOf<ICourtBookingRule>()
+                .AddClasses(c => c.AssignableTo<ICourtBookingRule>())
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
 
             services.TryAddScoped<IBookingRuleProcessor, BookingRuleProcessor>();
 
