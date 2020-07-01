@@ -27,11 +27,10 @@ namespace TennisBookings.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ExternalServicesConfig>(Configuration.GetSection("ExternalServices"));
             services.Configure<FeaturesConfiguration>(Configuration.GetSection("Features"));
 
-            services.AddTransient<IWeatherForecaster, AmazingWeatherForecaster>();
-            services.Replace(ServiceDescriptor.Transient<IWeatherForecaster, WeatherForecaster>());
-            //services.RemoveAll<IWeatherForecaster>();
+            services.AddWeatherForecasting();
 
             services.TryAddScoped<ICourtBookingService, CourtBookingService>();
 

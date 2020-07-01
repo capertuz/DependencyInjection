@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Threading.Tasks;
 using TennisBookings.Web.Controllers;
+using TennisBookings.Web.Domain;
 using TennisBookings.Web.Services;
 using TennisBookings.Web.ViewModels;
 using Xunit;
@@ -13,11 +15,12 @@ namespace TennisBookings.Web.Tests.Controllers
         public void ReturnsExpectedViewModel_WhenWeatherIsSun()
         {
             var mockWeatherForecaster = new Mock<IWeatherForecaster>();
-            mockWeatherForecaster.Setup(w => w.GetCurrentWeather()).Returns(
-                new WeatherResult
-                {
-                    WeatherCondition = WeatherCondition.Sun
-                }
+            var temp = new CurrentWeatherResult
+            {
+                Description = "Sun"
+            };
+            mockWeatherForecaster.Setup(w => w.GetCurrentWeatherAsync()).Returns(
+               Task.FromResult(temp)
                 );
 
             var sut = new HomeController(mockWeatherForecaster.Object);
@@ -33,12 +36,13 @@ namespace TennisBookings.Web.Tests.Controllers
         public void ReturnsExpectedViewModel_WhenWeatherIsRain()
         {
             var mockWeatherForecaster = new Mock<IWeatherForecaster>();
-            mockWeatherForecaster.Setup(w => w.GetCurrentWeather()).Returns(
-                new WeatherResult
-                {
-                    WeatherCondition = WeatherCondition.Rain
-                }
-                );
+            var temp = new CurrentWeatherResult
+            {
+                Description = "Rain"
+            };
+            mockWeatherForecaster.Setup(w => w.GetCurrentWeatherAsync()).Returns(
+                Task.FromResult(temp)
+            );
             var sut = new HomeController(mockWeatherForecaster.Object);
 
             var result = sut.Index();
